@@ -22,6 +22,8 @@ RUN python3 -m pip install --upgrade \
 # u-boot-tools needed for u-boot based images
 # sudo needed for ubuntu-minimal,debian-minimal
 # debootstrap needed for ubuntu-minimal,debian-minimal
+# curl needed for non-minimal ubuntu,centos
+# squashfs-tools  needed for non-minimal ubuntu,centos
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y --no-install-recommends \
     qemu-utils \
     kpartx \
@@ -31,7 +33,9 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y --no-ins
     sudo \
     debootstrap \
     gdisk \
-    dosfstools
+    dosfstools \
+    curl \
+    squashfs-tools
 
 RUN python3 -m pip install \
     diskimage-builder==3.26.0
@@ -45,9 +49,12 @@ RUN mkdir /opt/image_output && \
 VOLUME /opt/image_output
 VOLUME /opt/tmp
 
+# used for dib tmp / scratch operations
 ENV TMPDIR=/opt/tmp/dib
+# used for debootstrap downloads
 ENV APT_CACHE=/opt/tmp/apt
-ENV XDG_CACHE_HOME=/opt/tmp/cache
+# Used for ubuntu,centos src downloads
+ENV DIB_IMAGE_CACHE=/opt/tmp/cache
 
 WORKDIR /opt/image_config
 COPY gen_builds.py /opt/image_config/

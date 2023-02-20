@@ -7,6 +7,8 @@ base_env_vars:
   DIB_GRUB_TIMEOUT: "0"
   DIB_CLOUD_INIT_DATASOURCES: "ConfigDrive, OpenStack"
   DIB_DHCP_TIMEOUT: "10"
+  # DIB_OFFLINE: "1"
+  # DIB_AVOID_PACKAGES_UPDATE: "1"
 distros:
   - centos:
     extra_elements:
@@ -19,7 +21,7 @@ distros:
       - 9-stream
   - ubuntu:
     extra_elements:
-      - ubuntu-minimal
+      - ubuntu
     dib_release:
       - bionic
       - focal
